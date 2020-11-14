@@ -1,4 +1,4 @@
-This mod removes the crafts for locked and shared nodes and makes them craftable via a lock and their unlocked/locked counterpart in the lock workshop.
-Rename mcg_lockworkshop-master to mcg_lockworkshop during installation.
+This mod removes the default crafts for dyes and makes them craftable inside the dye mixer.
+Rename mcg_dyemixer-master to mcg_dyemixer during installation.
 
 TalkLounge was the originator of the mod idea.
