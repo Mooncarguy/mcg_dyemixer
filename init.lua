@@ -1,33 +1,58 @@
 --All content of this file are licensed under MIT. See LICENSE.txt for more information.
 
 mcg_dyemixer = {}
-mcg_dyemixer.crafts = {}
+mcg_dyemixer.mixes = {}
 
-mcg_dyemixer.register_craft = function(item_from, item_plus, item_to)
-	if not minetest.registered_nodes[item_from] or not minetest.registered_nodes[item_plus] or not minetest.registered_nodes[item_to] then
-		return
-	end
-	minetest.clear_craft({output = item_to})
-	mcg_dyemixer.crafts[item_from..item_plus] = item_to
+function mcg_dyemixer.register_mix(input_a, input_b, result)
+	local mix_id = string.gsub(input_a, ":", "-")..string.gsub(input_b, ":", "-")
+	local result_type = result:get_name()
+	mcg_dyemixer.mixes[mix_id] = result
+	--minetest.clear_craft({output = result_type})
 end
 
---dofile(minetest.get_modpath("mcg_dyemixer") .."/crafts.lua")
+mcg_dyemixer.register_mix("default:dirt", "default:torch", {name = "default:stone", count = 33})
 
-local function craft(pos, listname, index, stack, player)
+local function mcg_dyemixer_mixdye(pos)
 	local inv = minetest.get_meta(pos):get_inventory()
-	local input = inv:get_stack("input", 1):get_name()
-	local lock = inv:get_stack("lock", 1):get_name()
-	local craft_count = mcg_dyemixer.get_craftcount(inv:get_stack("input", 1), inv:get_stack("lock", 1))
+	local input_1 = inv:get_stack("input_a", 1)
+	local input_2 = inv:get_stack("input_b", 1)
+	local mix_id = string.gsub(input_1:get_name(), ":", "-")..string.gsub(input_2:get_name(), ":", "-")
+	local mix_id_b = string.gsub(input_2:get_name(), ":", "-")..string.gsub(input_1:get_name(), ":", "-")
+	local output = inv:get_stack("output", 1)
+	local mixnum = 0
 	
-	if mcg_dyemixer.crafts[input..lock] and inv:room_for_item("output", mcg_dyemixer.crafts[input..lock]) then
-		inv:remove_item("input", {name = input, count = craft_count})
-		inv:remove_item("lock", {name = lock, count = craft_count})
-		inv:add_item("output", {name = mcg_dyemixer.crafts[input..lock], count = craft_count})
-	elseif mcg_dyemixer.crafts[lock..input] and inv:room_for_item("output", mcg_dyemixer.crafts[lock..input]) then
-		inv:remove_item("input", {name = input, count = craft_count})
-		inv:remove_item("lock", {name = lock, count = craft_count})
-		inv:add_item("output", {name = mcg_dyemixer.crafts[lock..input], count = craft_count})
+	--Predefining number of mixes calculated by the input stack counts
+	if input_1:get_count() < input_2:get_count() then
+		mixnum = input_1:get_count()
+	elseif input_1:get_count() > input_2:get_count() then
+		mixnum = input_2:get_count()
 	end
+	
+	--Checking which way around the dyes are placed and return if not a valid recipes
+	if not mcg_dyemixer.mixes[mix_id] then
+		mix_id = mix_id_b
+	end
+	if not mcg_dyemixer.mixes[mix_id] then
+		return false
+	end
+
+	--Redefining according to space in output area
+	while inv:room_for_item(output, {name = mcg_dyemixer.mixes[mix_id]:get_name(), count = 			
+	mcg_dyemixer.mixes[mix_id]:get_count()*mixnum}) 
+	~= true do
+		mixnum = mixnum - 1
+		if mixnum == 0 or mixnum < 0 then
+			return false
+		end
+	end
+	
+	--Setting the new stacks
+	local newstack_a = {name = input_1:get_name(), count = input_1:get_count() - mixnum}
+	local newstack_b = {name = input_2:get_name(), count = input_2:get_count() - mixnum}
+	local newstack_output = ({name = mcg_dyemixer.mixes[mix_id]:get_name(), count = mcg_dyemixer.mixes[mix_id]:get_count()*mixnum})
+	inv:set_stack(input_a, newstack_a)
+	inv:set_stack(input_b, newstack_b)
+	inv:set_stack(input_output, newstack_output)
 end
 
 minetest.register_node("mcg_dyemixer:dye_mixer", {
@@ -35,7 +60,7 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 	groups = {choppy = 2, oddly_breakable_by_hand = 1, flammable = 2},
 	sounds = default.node_sound_wood_defaults(),
 	tiles = {
-		"mcg_dyemixer_bottom_top_underlay.png", "mcg_dyemixer_bottom_top.png", 
+		"mcg_dyemixer_bottom_top_underlay.png", "mcg_dyemixer_bottom_top_underlay.png", 
 		"mcg_dyemixer_side_underlay.png","mcg_dyemixer_side_underlay.png", 
 		"mcg_dyemixer_side_underlay.png", "mcg_dyemixer_side_underlay.png"
 	},
@@ -43,28 +68,28 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		meta:set_string("infotext", "Dye Mixer")
-		inv:set_size("input", 1)
-		inv:set_size("lock", 1)
+		inv:set_size("input_a", 1)
+		inv:set_size("input_b", 1)
 		inv:set_size("output", 1)
 		meta:set_string("formspec", [[
 			size[8,4.8]
 			box[-0.01,0;1.84,0.9;#555555]
 			image[0,0;1,1;mcg_dyemixer_mixicon_underlay.png^mcg_dyemixer_mixicon.png]
 			label[1.2,0.25;Mix]
-			list[context;input;2,0;1,1;]
-			list[context;lock;3,0;1,1;]
+			list[context;input_a;2,0;1,1;]
+			list[context;input_b;3,0;1,1;]
 			--image[3,0;1,1;mcg_dyemixer_lock_layout.png]
 			image[4,0;1,1;gui_furnace_arrow_bg.png^[transformR270]
 			list[context;output;5,0;1,1;]
 			list[current_player;main;0,1.1;8,4;]
 		]].. default.gui_bg .. default.gui_bg_img .. default.gui_slots .. default.get_hotbar_bg(0, 1.1))
 	end,
-	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-		local stackname = stack:get_name()
-		return stack:get_count()
+	on_metadata_inventory_put = function(pos)
+		mcg_dyemixer_mixdye(pos)
 	end,
-	on_metadata_inventory_put = craft,
-	on_metadata_inventory_take = craft,
+	on_metadata_inventory_take = function(pos)
+		mcg_dyemixer_mixdye(pos)
+	end,
 	can_dig = function(pos)
 		local inv = minetest.get_meta(pos):get_inventory()
 		if inv:is_empty("input") and inv:is_empty("lock") and inv:is_empty("output") then
