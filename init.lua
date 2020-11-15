@@ -30,8 +30,8 @@ local function craft(pos, listname, index, stack, player)
 	end
 end
 
-minetest.register_node("mcg_dyemixer:lock_workshop", {
-	description = "Lock Workshop",
+minetest.register_node("mcg_dyemixer:dye_mixer", {
+	description = "Dye Mixer",
 	groups = {choppy = 2, oddly_breakable_by_hand = 1, flammable = 2},
 	sounds = default.node_sound_wood_defaults(),
 	tiles = {
