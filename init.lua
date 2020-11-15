@@ -19,14 +19,18 @@ local function craft(pos, listname, index, stack, player)
 	local lock = inv:get_stack("lock", 1):get_name()
 	local craft_count = mcg_dyemixer.get_craftcount(inv:get_stack("input", 1), inv:get_stack("lock", 1))
 	
-	if mcg_lockworkshop.crafts[input..lock] and inv:room_for_item("output", mcg_lockworkshop.crafts[input..lock]) and then
-		inv:remove_item("input", {name = input, count = 1})
-		inv:remove_item("lock", {name = "mcg_lockworkshop:lock", count = 1})
-		inv:add_item("output", mcg_lockworkshop.crafts[input])
+	if mcg_lockworkshop.crafts[input..lock] and inv:room_for_item("output", mcg_lockworkshop.crafts[input..lock]) then
+		inv:remove_item("input", {name = input, count = craft_count})
+		inv:remove_item("lock", {name = lock, count = craft_count})
+		inv:add_item("output", {name = mcg_lockworkshop.crafts[input..lock], count = craft_count})
+	elseif mcg_lockworkshop.crafts[lock..input] and inv:room_for_item("output", mcg_lockworkshop.crafts[lock..input]) then
+		inv:remove_item("input", {name = input, count = craft_count})
+		inv:remove_item("lock", {name = lock, count = craft_count})
+		inv:add_item("output", {name = mcg_lockworkshop.crafts[lock..input], count = craft_count})
 	end
 end
 
-minetest.register_node("mcg_lockworkshop:lock_workshop", {
+minetest.register_node("mcg_dyemixer:lock_workshop", {
 	description = "Lock Workshop",
 	groups = {choppy = 2, oddly_breakable_by_hand = 1, flammable = 2},
 	sounds = default.node_sound_wood_defaults(),
