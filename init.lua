@@ -8,10 +8,10 @@ mcg_dyemixer.register_craft = function(item_from, item_plus, item_to)
 		return
 	end
 	minetest.clear_craft({output = item_to})
-	mcg_lockworkshop.crafts[item_from..item_plus] = item_to
+	mcg_dyemixer.crafts[item_from..item_plus] = item_to
 end
 
-dofile(minetest.get_modpath("mcg_dyemixer") .."/crafts.lua")
+--dofile(minetest.get_modpath("mcg_dyemixer") .."/crafts.lua")
 
 local function craft(pos, listname, index, stack, player)
 	local inv = minetest.get_meta(pos):get_inventory()
@@ -19,14 +19,14 @@ local function craft(pos, listname, index, stack, player)
 	local lock = inv:get_stack("lock", 1):get_name()
 	local craft_count = mcg_dyemixer.get_craftcount(inv:get_stack("input", 1), inv:get_stack("lock", 1))
 	
-	if mcg_lockworkshop.crafts[input..lock] and inv:room_for_item("output", mcg_lockworkshop.crafts[input..lock]) then
+	if mcg_dyemixer.crafts[input..lock] and inv:room_for_item("output", mcg_dyemixer.crafts[input..lock]) then
 		inv:remove_item("input", {name = input, count = craft_count})
 		inv:remove_item("lock", {name = lock, count = craft_count})
-		inv:add_item("output", {name = mcg_lockworkshop.crafts[input..lock], count = craft_count})
-	elseif mcg_lockworkshop.crafts[lock..input] and inv:room_for_item("output", mcg_lockworkshop.crafts[lock..input]) then
+		inv:add_item("output", {name = mcg_dyemixer.crafts[input..lock], count = craft_count})
+	elseif mcg_dyemixer.crafts[lock..input] and inv:room_for_item("output", mcg_dyemixer.crafts[lock..input]) then
 		inv:remove_item("input", {name = input, count = craft_count})
 		inv:remove_item("lock", {name = lock, count = craft_count})
-		inv:add_item("output", {name = mcg_lockworkshop.crafts[lock..input], count = craft_count})
+		inv:add_item("output", {name = mcg_dyemixer.crafts[lock..input], count = craft_count})
 	end
 end
 
@@ -35,8 +35,8 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 	groups = {choppy = 2, oddly_breakable_by_hand = 1, flammable = 2},
 	sounds = default.node_sound_wood_defaults(),
 	tiles = {
-		"mcg_lockworkshop_top_bottom_underlay.png^mcg_lockworkshop_top_bottom_underlay.png", "mcg_lockworkshop_top_bottom_underlay.png", 
-		"mcg_dyemixer_side_underlay.png ","mcg_dyemixer_side_underlay.png", 
+		"mcg_dyemixer_bottom_top_underlay.png", "mcg_dyemixer_bottom_top.png", 
+		"mcg_dyemixer_side_underlay.png","mcg_dyemixer_side_underlay.png", 
 		"mcg_dyemixer_side_underlay.png", "mcg_dyemixer_side_underlay.png"
 	},
 	after_place_node = function(pos) 
@@ -53,7 +53,7 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 			label[1.2,0.25;Mix]
 			list[context;input;2,0;1,1;]
 			list[context;lock;3,0;1,1;]
-			--image[3,0;1,1;mcg_lockworkshop_lock_layout.png]
+			--image[3,0;1,1;mcg_dyemixer_lock_layout.png]
 			image[4,0;1,1;gui_furnace_arrow_bg.png^[transformR270]
 			list[context;output;5,0;1,1;]
 			list[current_player;main;0,1.1;8,4;]
@@ -78,7 +78,7 @@ minetest.register_craft({
 	output = "mcg_dyemixer:dye_mixer",
 	recipe = {
 		{"default:bucket", "group:stick", "default:bucket"},
-		{"group:wood", "default:bucket", "group:wood},
+		{"group:wood", "default:bucket", "group:wood"},
 		{"group:wood", "group:wood", "group:wood"}
 	}
 })
