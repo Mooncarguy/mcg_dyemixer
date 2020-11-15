@@ -38,7 +38,8 @@ For more information see: https://www.sandboxgamemaker.com/DWYWPL/
 
 License of the file mcg_lockworkshop_mixicon_underlay.png (WTFPL)
 -----------------------------------------------------------------
-credits: Gambit, kilbith, Cisoun
+
+Credits: Gambit, kilbith, Cisoun
 
 Do What The Fuck You Want To Public License
 
