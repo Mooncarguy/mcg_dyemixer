@@ -42,18 +42,18 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 	after_place_node = function(pos) 
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
-		meta:set_string("infotext", "Lock Workshop")
+		meta:set_string("infotext", "Dye Mixer")
 		inv:set_size("input", 1)
 		inv:set_size("lock", 1)
 		inv:set_size("output", 1)
 		meta:set_string("formspec", [[
 			size[8,4.8]
 			box[-0.01,0;1.84,0.9;#555555]
-			image[0,0;1,1;mcg_lockworkshop_lock_workshop_side_a.png]
-			label[1.2,0.25;Lock]
+			image[0,0;1,1;mcg_dyemixer_mixicon_underlay.png^mcg_dyemixer_mixicon.png]
+			label[1.2,0.25;Mix]
 			list[context;input;2,0;1,1;]
 			list[context;lock;3,0;1,1;]
-			image[3,0;1,1;mcg_lockworkshop_lock_layout.png]
+			--image[3,0;1,1;mcg_lockworkshop_lock_layout.png]
 			image[4,0;1,1;gui_furnace_arrow_bg.png^[transformR270]
 			list[context;output;5,0;1,1;]
 			list[current_player;main;0,1.1;8,4;]
@@ -61,11 +61,7 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 	end,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 		local stackname = stack:get_name()
-		if (listname == "input" and mcg_lockworkshop.crafts[stackname]) or
-			 (listname == "lock" and stackname == "mcg_lockworkshop:lock") then
-			return stack:get_count()
-		end
-		return 0
+		return stack:get_count()
 	end,
 	on_metadata_inventory_put = craft,
 	on_metadata_inventory_take = craft,
@@ -79,24 +75,10 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 end})
 
 minetest.register_craft({
-	output = "mcg_lockworkshop:lock_workshop",
+	output = "mcg_dyemixer:dye_mixer",
 	recipe = {
-		{"group:wood", "group:stick", "group:wood"},
-		{"group:stick", "default:steel_ingot", "group:stick"},
-		{"group:wood", "group:stick", "group:wood"}
-	}
-})
-
-minetest.register_craftitem("mcg_lockworkshop:lock", {
-	description = "Lock",
-	inventory_image = "mcg_lockworkshop_lock.png",
-	wield_image = "mcg_lockworkshop_lock.png"
-})
-
-minetest.register_craft({
-	output = "mcg_lockworkshop:lock 3",
-	recipe = {
-		{"","default:steel_ingot", ""},
-		{"default:copper_ingot", "default:steel_ingot", "default:copper_ingot"}
+		{"default:bucket", "group:stick", "default:bucket"},
+		{"group:wood", "default:bucket", "group:wood},
+		{"group:wood", "group:wood", "group:wood"}
 	}
 })
