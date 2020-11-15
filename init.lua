@@ -1,24 +1,25 @@
 --All content of this file are licensed under MIT. See LICENSE.txt for more information.
 
-mcg_lockworkshop = {}
-mcg_lockworkshop.crafts = {}
+mcg_dyemixer = {}
+mcg_dyemixer.crafts = {}
 
-mcg_lockworkshop.register_craft = function(item_from, item_to)
-	if not minetest.registered_nodes[item_from] or not minetest.registered_nodes[item_to] then
+mcg_dyemixer.register_craft = function(item_from, item_plus, item_to)
+	if not minetest.registered_nodes[item_from] or not minetest.registered_nodes[item_plus] or not minetest.registered_nodes[item_to] then
 		return
 	end
 	minetest.clear_craft({output = item_to})
-	mcg_lockworkshop.crafts[item_from] = item_to
+	mcg_lockworkshop.crafts[item_from..item_plus] = item_to
 end
 
-dofile(minetest.get_modpath("mcg_lockworkshop") .."/crafts.lua")
+dofile(minetest.get_modpath("mcg_dyemixer") .."/crafts.lua")
 
 local function craft(pos, listname, index, stack, player)
 	local inv = minetest.get_meta(pos):get_inventory()
 	local input = inv:get_stack("input", 1):get_name()
-	local lock = inv:get_stack("lock", 1):is_empty()
+	local lock = inv:get_stack("lock", 1):get_name()
+	local craft_count = mcg_dyemixer.get_craftcount(inv:get_stack("input", 1), inv:get_stack("lock", 1))
 	
-	if mcg_lockworkshop.crafts[input] and inv:room_for_item("output", mcg_lockworkshop.crafts[input]) and not lock then
+	if mcg_lockworkshop.crafts[input..lock] and inv:room_for_item("output", mcg_lockworkshop.crafts[input..lock]) and then
 		inv:remove_item("input", {name = input, count = 1})
 		inv:remove_item("lock", {name = "mcg_lockworkshop:lock", count = 1})
 		inv:add_item("output", mcg_lockworkshop.crafts[input])
