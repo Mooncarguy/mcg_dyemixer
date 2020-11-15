@@ -35,9 +35,9 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 	groups = {choppy = 2, oddly_breakable_by_hand = 1, flammable = 2},
 	sounds = default.node_sound_wood_defaults(),
 	tiles = {
-		"default_chest_top.png^mcg_lockworkshop_lock_workshop_top.png", "default_chest_top.png", 
-		"default_chest_side.png^mcg_lockworkshop_lock_workshop_side_a.png","default_chest_side.png^mcg_lockworkshop_lock_workshop_side_b.png", 
-		"default_chest_side.png^mcg_lockworkshop_lock_workshop_side_c.png", "default_chest_side.png^mcg_lockworkshop_lock_workshop_side_d.png"
+		"mcg_lockworkshop_top_bottom_underlay.png^mcg_lockworkshop_top_bottom_underlay.png", "mcg_lockworkshop_top_bottom_underlay.png", 
+		"mcg_dyemixer_side_underlay.png ","mcg_dyemixer_side_underlay.png", 
+		"mcg_dyemixer_side_underlay.png", "mcg_dyemixer_side_underlay.png"
 	},
 	after_place_node = function(pos) 
 		local meta = minetest.get_meta(pos)
