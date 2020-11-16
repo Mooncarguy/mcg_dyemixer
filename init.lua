@@ -88,9 +88,11 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 			label[1.2,0.25;Mix]
 			list[context;input_a;2,0;1,1;]
 			list[context;input_b;3,0;1,1;]
-			--image[3,0;1,1;mcg_dyemixer_lock_layout.png]
+			image[2,0;1,1;mcg_dyemixer_dye_layout.png]
+			image[3,0;1,1;mcg_dyemixer_dye_layout.png]
 			image[4,0;1,1;gui_furnace_arrow_bg.png^[transformR270]
 			list[context;output;5,0;1,1;]
+			image[5,0;1,1;mcg_dyemixer_dye_layout.png]
 			list[current_player;main;0,1.1;8,4;]
 		]].. default.gui_bg .. default.gui_bg_img .. default.gui_slots .. default.get_hotbar_bg(0, 1.1))
 	end,
