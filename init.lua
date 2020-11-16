@@ -110,6 +110,9 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 	on_metadata_inventory_take = function(pos)
 		mcg_dyemixer_mixdye(pos)
 	end,
+	on_metadata_inventory_take = function(pos)
+		mcg_dyemixer_mixdye(pos)
+	end,
 	can_dig = function(pos)
 		local inv = minetest.get_meta(pos):get_inventory()
 		if inv:is_empty("input_a") and inv:is_empty("input_b") and inv:is_empty("output") then
