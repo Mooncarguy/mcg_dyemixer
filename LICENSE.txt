@@ -1,4 +1,4 @@
-License of the files init.lua and crafts.lua (MIT)
+License of the file init.lua (MIT)
 ----------------------------------------------------------
 
 Copyright 2020 Mooncarguy
