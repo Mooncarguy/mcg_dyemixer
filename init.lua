@@ -45,7 +45,7 @@ local function mcg_dyemixer_mixdye(pos)
 
 	--Redefining according to space in output area
 	for i=mixnum, 0, -1 do
-		if inv:room_for_item ("output", {name = mcg_dyemixer.mixes[mix_id].name, count = mcg_dyemixer.mixes[mix_id].count*mixnum}) ~= 			true then
+		if inv:room_for_item ("output", {name = mcg_dyemixer.mixes[mix_id].name, count = mcg_dyemixer.mixes[mix_id].count*mixnum}) ~= true then
 			mixnum = mixnum - 1
 		end
 	end
