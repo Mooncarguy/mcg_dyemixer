@@ -98,8 +98,9 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 	end,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 		local stackname = stack:get_name()
-		if listname == ("input_a" or "input_b") and string.find(stackname, "dye:") ~= nil then
-			return 1
+		if (listname == "input_a" or listname == "input_b") and string.sub(stackname, 1, 4) == "dye:" then
+			print ("duh")
+			return stack:get_count()
 		end
 		return 0
 	end,
