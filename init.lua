@@ -110,7 +110,7 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 	on_metadata_inventory_take = function(pos)
 		mcg_dyemixer_mixdye(pos)
 	end,
-	on_metadata_inventory_take = function(pos)
+	on_metadata_inventory_move = function(pos)
 		mcg_dyemixer_mixdye(pos)
 	end,
 	can_dig = function(pos)
