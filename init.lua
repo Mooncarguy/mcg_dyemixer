@@ -9,8 +9,6 @@ function mcg_dyemixer.register_mix(input_a, input_b, result)
 	minetest.clear_craft({output = result.name})
 end
 
-mcg_dyemixer.register_mix("default:dirt", "default:torch", {name = "default:stone", count = 33})
-
 local function mcg_dyemixer_mixdye(pos)
 	local inv = minetest.get_meta(pos):get_inventory()
 	local input_a = inv:get_stack("input_a", 1)
@@ -67,9 +65,11 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 	groups = {choppy = 2, oddly_breakable_by_hand = 1, flammable = 2},
 	sounds = default.node_sound_wood_defaults(),
 	tiles = {
-		"mcg_dyemixer_bottom_top_underlay.png", "mcg_dyemixer_bottom_top_underlay.png", 
-		"mcg_dyemixer_side_underlay.png","mcg_dyemixer_side_underlay.png", 
-		"mcg_dyemixer_side_underlay.png", "mcg_dyemixer_side_underlay.png"
+		"mcg_dyemixer__dye_mixer_bottom_top_underlay.png", "mcg_dyemixer__dye_mixer_bottom_top_underlay.png", 
+		"mcg_dyemixer_dye_mixer_side_underlay.png^mcg_dyemixer_dye_mixer_side_a.png",
+		"mcg_dyemixer_dye_mixer_side_underlay.png^mcg_dyemixer_dye_mixer_side_b.png", 
+		"mcg_dyemixer_dye_mixer_side_underlay.png^mcg_dyemixer_dye_mixer_side_c.png", 
+		"mcg_dyemixer_dye_mixer_side_underlay.png^mcg_dyemixer_dye_mixer_side_d.png"
 	},
 	after_place_node = function(pos) 
 		local meta = minetest.get_meta(pos)
@@ -111,6 +111,17 @@ minetest.register_craft({
 	recipe = {
 		{"default:bucket", "group:stick", "default:bucket"},
 		{"group:wood", "default:bucket", "group:wood"},
-		{"group:wood", "group:wood", "group:wood"}
+		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"}
 	}
 })
+
+if minetest.get_modpath("xdecor") then
+	minetest.register_craft({
+	output = "mcg_dyemixer:dye_mixer",
+	recipe = {
+		{"xdecor:bowl", "group:stick", "xdecor:bowl"},
+		{"group:wood", "default:bucket", "group:wood"},
+		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"}
+	}
+})
+end
