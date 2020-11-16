@@ -6,7 +6,6 @@ mcg_dyemixer.mixes = {}
 function mcg_dyemixer.register_mix(input_a, input_b, result)
 	local mix_id = string.gsub(input_a, ":", "-")..string.gsub(input_b, ":", "-")
 	mcg_dyemixer.mixes[mix_id] = {name = result.name, count = result.count}
-	minetest.clear_craft({output = result.name})
 end
 
 local function mcg_dyemixer_mixdye(pos)
