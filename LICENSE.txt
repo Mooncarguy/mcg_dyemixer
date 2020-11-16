@@ -46,4 +46,4 @@ credits: Gambit, kilbith, Cisoun
 
 Do What The Fuck You Want To Public License
 
-For more information see: http://www.wtfpl.net/about/
+For more information see: http://www.wtfpl.net/txt/copying/
