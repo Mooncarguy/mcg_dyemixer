@@ -8,6 +8,9 @@ function mcg_dyemixer.register_mix(input_a, input_b, result)
 	mcg_dyemixer.mixes[mix_id] = {name = result.name, count = result.count}
 end
 
+local modpath = minetest.get_modpath("mcg_dyemixer")
+dofile(modpath.."/crafts.lua")
+
 local function mcg_dyemixer_mixdye(pos)
 	local inv = minetest.get_meta(pos):get_inventory()
 	local input_a = inv:get_stack("input_a", 1)
