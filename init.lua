@@ -1,31 +1,30 @@
---All content of this file are licensed under MIT. See LICENSE.txt for more information.
+--All contents of this file are licensed under MIT. See LICENSE.txt for more information.
 
 mcg_dyemixer = {}
 mcg_dyemixer.mixes = {}
 
 function mcg_dyemixer.register_mix(input_a, input_b, result)
 	local mix_id = string.gsub(input_a, ":", "-")..string.gsub(input_b, ":", "-")
-	local result_type = result:get_name()
-	mcg_dyemixer.mixes[mix_id] = result
-	--minetest.clear_craft({output = result_type})
+	mcg_dyemixer.mixes[mix_id] = {name = result.name, count = result.count}
+	minetest.clear_craft({output = result.name})
 end
 
 mcg_dyemixer.register_mix("default:dirt", "default:torch", {name = "default:stone", count = 33})
 
 local function mcg_dyemixer_mixdye(pos)
 	local inv = minetest.get_meta(pos):get_inventory()
-	local input_1 = inv:get_stack("input_a", 1)
-	local input_2 = inv:get_stack("input_b", 1)
-	local mix_id = string.gsub(input_1:get_name(), ":", "-")..string.gsub(input_2:get_name(), ":", "-")
-	local mix_id_b = string.gsub(input_2:get_name(), ":", "-")..string.gsub(input_1:get_name(), ":", "-")
+	local input_a = inv:get_stack("input_a", 1)
+	local input_b = inv:get_stack("input_b", 1)
+	local mix_id = string.gsub(input_a:get_name(), ":", "-")..string.gsub(input_b:get_name(), ":", "-")
+	local mix_id_b = string.gsub(input_b:get_name(), ":", "-")..string.gsub(input_a:get_name(), ":", "-")
 	local output = inv:get_stack("output", 1)
 	local mixnum = 0
 	
 	--Predefining number of mixes calculated by the input stack counts
-	if input_1:get_count() < input_2:get_count() then
-		mixnum = input_1:get_count()
-	elseif input_1:get_count() > input_2:get_count() then
-		mixnum = input_2:get_count()
+	if input_a:get_count() < input_b:get_count() then
+		mixnum = input_a:get_count()
+	else
+		mixnum = input_b:get_count()
 	end
 	
 	--Checking which way around the dyes are placed and return if not a valid recipes
@@ -37,22 +36,22 @@ local function mcg_dyemixer_mixdye(pos)
 	end
 
 	--Redefining according to space in output area
-	while inv:room_for_item(output, {name = mcg_dyemixer.mixes[mix_id]:get_name(), count = 			
-	mcg_dyemixer.mixes[mix_id]:get_count()*mixnum}) 
-	~= true do
-		mixnum = mixnum - 1
-		if mixnum == 0 or mixnum < 0 then
-			return false
+	for i=mixnum, 0, -1 do
+		if inv:room_for_item ("output", {name = mcg_dyemixer.mixes[mix_id].name, count = mcg_dyemixer.mixes[mix_id].count*mixnum}) ~= 			true then
+			mixnum = mixnum - 1
 		end
 	end
-	
+
 	--Setting the new stacks
-	local newstack_a = {name = input_1:get_name(), count = input_1:get_count() - mixnum}
-	local newstack_b = {name = input_2:get_name(), count = input_2:get_count() - mixnum}
-	local newstack_output = ({name = mcg_dyemixer.mixes[mix_id]:get_name(), count = mcg_dyemixer.mixes[mix_id]:get_count()*mixnum})
-	inv:set_stack(input_a, newstack_a)
-	inv:set_stack(input_b, newstack_b)
-	inv:set_stack(input_output, newstack_output)
+	local newstack_a = {name = input_a:get_name(), count = input_a:get_count() - mixnum}
+	local newstack_b = {name = input_b:get_name(), count = input_b:get_count() - mixnum}
+	local newstack_output = {name = mcg_dyemixer.mixes[mix_id].name, count = mcg_dyemixer.mixes[mix_id].count*mixnum + 
+	output:get_count()}
+	if mixnum >= 1 and (input_a:get_count() - mixnum) >= 0 and (input_b:get_count() - mixnum) >= 0 then
+		inv:set_stack("input_a", 1, newstack_a)
+		inv:set_stack("input_b", 1, newstack_b)
+		inv:set_stack("output", 1, newstack_output)
+	end
 end
 
 minetest.register_node("mcg_dyemixer:dye_mixer", {
@@ -92,7 +91,7 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 	end,
 	can_dig = function(pos)
 		local inv = minetest.get_meta(pos):get_inventory()
-		if inv:is_empty("input") and inv:is_empty("lock") and inv:is_empty("output") then
+		if inv:is_empty("input_a") and inv:is_empty("input_b") and inv:is_empty("output") then
 			return true
 		else
 			return false
