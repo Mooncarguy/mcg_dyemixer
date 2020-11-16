@@ -110,8 +110,8 @@ end})
 minetest.register_craft({
 	output = "mcg_dyemixer:dye_mixer",
 	recipe = {
-		{"default:bucket", "group:stick", "default:bucket"},
-		{"group:wood", "default:bucket", "group:wood"},
+		{"bucket:bucket_empty", "group:stick", "bucket:bucket_empty"},
+		{"group:wood", "bucket:bucket_empty", "group:wood"},
 		{"vessels:steel_bottle", "vessels:steel_bottle", "vessels:steel_bottle"}
 	}
 })
@@ -121,7 +121,7 @@ if minetest.get_modpath("xdecor") then
 	output = "mcg_dyemixer:dye_mixer",
 	recipe = {
 		{"xdecor:bowl", "group:stick", "xdecor:bowl"},
-		{"group:wood", "default:bucket", "group:wood"},
+		{"group:wood", "bucket:bucket_empty", "group:wood"},
 		{"vessels:steel_bottle", "vessels:steel_bottle", "vessels:steel_bottle"}
 	}
 })
