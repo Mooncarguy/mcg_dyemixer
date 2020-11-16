@@ -17,8 +17,8 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE S
 
 
 License of the files mcg_dyemixer_mixicon.png, mcg_dyemixer_dye_mixer_side_a.png, mcg_dyemixer_dye_mixer_side_b.png, mcg_dyemixer_dye_mixer_side_c.png 
-and mcg_dyemixer_dye_mixer_side_d.png (CC0 1.0)
 -------------------------------------------------------------------------------------------------------------------------------------------------------
+and mcg_dyemixer_dye_mixer_side_d.png (CC0 1.0)
 -----------------------------------------------
 
 Copyright 2020 Mooncarguy
