@@ -34,6 +34,13 @@ local function mcg_dyemixer_mixdye(pos)
 	if not mcg_dyemixer.mixes[mix_id] then
 		return false
 	end
+	
+	--Redefining according to max stack
+	for i=mixnum, 0, -1 do 
+		if  mcg_dyemixer.mixes[mix_id].count*mixnum > 99 then
+			mixnum = mixnum - 1
+		end
+	end
 
 	--Redefining according to space in output area
 	for i=mixnum, 0, -1 do
