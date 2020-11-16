@@ -36,8 +36,9 @@ local function mcg_dyemixer_mixdye(pos)
 	end
 	
 	--Redefining according to max stack
+	local stack_to_check = ItemStack(output:get_name())
 	for i=mixnum, 0, -1 do 
-		if  mcg_dyemixer.mixes[mix_id].count*mixnum > 99 then
+		if  mcg_dyemixer.mixes[mix_id].count*mixnum > stack_to_check:get_stack_max() then
 			mixnum = mixnum - 1
 		end
 	end
