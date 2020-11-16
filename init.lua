@@ -96,6 +96,13 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 			list[current_player;main;0,1.1;8,4;]
 		]].. default.gui_bg .. default.gui_bg_img .. default.gui_slots .. default.get_hotbar_bg(0, 1.1))
 	end,
+	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+		local stackname = stack:get_name()
+		if listname == ("input_a" or "input_b") and string.find(stackname, "dye:") ~= nil then
+			return 1
+		end
+		return 0
+	end,
 	on_metadata_inventory_put = function(pos)
 		mcg_dyemixer_mixdye(pos)
 	end,
