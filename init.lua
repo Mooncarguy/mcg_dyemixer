@@ -65,7 +65,8 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 	groups = {choppy = 2, oddly_breakable_by_hand = 1, flammable = 2},
 	sounds = default.node_sound_wood_defaults(),
 	tiles = {
-		"mcg_dyemixer_dye_mixer_bottom_top_underlay.png", "mcg_dyemixer_dye_mixer_bottom_top_underlay.png", 
+		"mcg_dyemixer_dye_mixer_bottom_top_underlay.png^mcg_dyemixer_dye_mixer_top.png^[transformR270", 
+		"mcg_dyemixer_dye_mixer_bottom_top_underlay.png", 
 		"mcg_dyemixer_dye_mixer_side_underlay.png^mcg_dyemixer_dye_mixer_side_a.png",
 		"mcg_dyemixer_dye_mixer_side_underlay.png^mcg_dyemixer_dye_mixer_side_b.png", 
 		"mcg_dyemixer_dye_mixer_side_underlay.png^mcg_dyemixer_dye_mixer_side_c.png", 
@@ -111,7 +112,7 @@ minetest.register_craft({
 	recipe = {
 		{"default:bucket", "group:stick", "default:bucket"},
 		{"group:wood", "default:bucket", "group:wood"},
-		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"}
+		{"vessels:steel_bottle", "vessels:steel_bottle", "vessels:steel_bottle"}
 	}
 })
 
@@ -121,7 +122,7 @@ if minetest.get_modpath("xdecor") then
 	recipe = {
 		{"xdecor:bowl", "group:stick", "xdecor:bowl"},
 		{"group:wood", "default:bucket", "group:wood"},
-		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"}
+		{"vessels:steel_bottle", "vessels:steel_bottle", "vessels:steel_bottle"}
 	}
 })
 end
