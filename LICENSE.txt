@@ -16,10 +16,10 @@ PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIG
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-License of the files mcg_dyemixer_mixicon.png, mcg_dyemixer_dye_mixer_side_a.png, mcg_dyemixer_dye_mixer_side_b.png, mcg_dyemixer_dye_mixer_side_c.png 
+License of the files mcg_dyemixer_mixicon.png, mcg_dyemixer_dye_mixer_side_a.png, mcg_dyemixer_dye_mixer_side_b.png, mcg_dyemixer_dye_mixer_side_c.png, 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
-and mcg_dyemixer_dye_mixer_side_d.png (CC0 1.0)
------------------------------------------------
+mcg_dyemixer_dye_mixer_side_d.png and mcg_dyemixer_dye_mixer_top.png (CC0 1.0)
+------------------------------------------------------------------------------
 
 Copyright 2020 Mooncarguy
 
