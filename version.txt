@@ -1,6 +1,12 @@
-This is version 0.1.1_alpha.
+This is version 0.5_beta.
 
 Changelog:
+
+beta
+----
+
+0.5_beta Better formspec, better top texture, added support for wool mod
+
 
 alpha
 -----

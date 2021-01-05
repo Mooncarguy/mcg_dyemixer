@@ -1,5 +1,3 @@
---All contents of this file are licensed under MIT. See LICENSE.txt for more information.
-
 mcg_dyemixer = {}
 mcg_dyemixer.mixes = {}
 
@@ -8,8 +6,7 @@ function mcg_dyemixer.register_mix(input_a, input_b, result)
 	mcg_dyemixer.mixes[mix_id] = {name = result.name, count = result.count}
 end
 
-local modpath = minetest.get_modpath("mcg_dyemixer")
-dofile(modpath.."/crafts.lua")
+dofile(minetest.get_modpath("mcg_dyemixer") .."/crafts.lua")
 
 local function mcg_dyemixer_mixdye(pos)
 	local inv = minetest.get_meta(pos):get_inventory()
@@ -67,7 +64,7 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 	groups = {choppy = 2, oddly_breakable_by_hand = 1, flammable = 2},
 	sounds = default.node_sound_wood_defaults(),
 	tiles = {
-		"mcg_dyemixer_dye_mixer_bottom_top_underlay.png^mcg_dyemixer_dye_mixer_top.png^[transformR270", 
+		"mcg_dyemixer_dye_mixer_bottom_top_underlay.png^mcg_dyemixer_dye_mixer_top.png^[transformR270^mcg_dyemixer_dye_mixer_top_overlay.png", 
 		"mcg_dyemixer_dye_mixer_bottom_top_underlay.png", 
 		"mcg_dyemixer_dye_mixer_side_underlay.png^mcg_dyemixer_dye_mixer_side_a.png",
 		"mcg_dyemixer_dye_mixer_side_underlay.png^mcg_dyemixer_dye_mixer_side_b.png", 
@@ -84,25 +81,29 @@ minetest.register_node("mcg_dyemixer:dye_mixer", {
 		meta:set_string("formspec", [[
 			size[8,4.8]
 			box[-0.01,0;1.84,0.9;#555555]
-			image[0,0;1,1;mcg_dyemixer_mixicon_underlay.png^mcg_dyemixer_mixicon.png]
-			label[1.2,0.25;Mix]
+			image[0,0;1,1;bucket.png]
+			image[0,-0.15;1,1;mcg_dyemixer_mixicon.png]
+			label[1,0.25;Mix]
 			list[context;input_a;2,0;1,1;]
 			list[context;input_b;3,0;1,1;]
-			image[2,0;1,1;mcg_dyemixer_dye_layout.png]
-			image[3,0;1,1;mcg_dyemixer_dye_layout.png]
 			image[4,0;1,1;gui_furnace_arrow_bg.png^[transformR270]
 			list[context;output;5,0;1,1;]
-			image[5,0;1,1;mcg_dyemixer_dye_layout.png]
 			list[current_player;main;0,1.1;8,4;]
 		]].. default.gui_bg .. default.gui_bg_img .. default.gui_slots .. default.get_hotbar_bg(0, 1.1))
 	end,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 		local stackname = stack:get_name()
-		if (listname == "input_a" or listname == "input_b") and string.sub(stackname, 1, 4) == "dye:" then
-			print ("duh")
+		if (listname == "input_a" or listname == "input_b") and (string.sub(stackname, 1, 4) == "dye:" or string.sub(stackname, 1, 5) == "wool:") then
 			return stack:get_count()
 		end
 		return 0
+	end,
+	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+		if to_list == "output" then
+			return 0
+		else
+			return count
+		end
 	end,
 	on_metadata_inventory_put = function(pos)
 		mcg_dyemixer_mixdye(pos)
@@ -125,19 +126,8 @@ end})
 minetest.register_craft({
 	output = "mcg_dyemixer:dye_mixer",
 	recipe = {
-		{"bucket:bucket_empty", "group:stick", "bucket:bucket_empty"},
+		{"", "group:stick", ""},
 		{"group:wood", "bucket:bucket_empty", "group:wood"},
 		{"vessels:steel_bottle", "vessels:steel_bottle", "vessels:steel_bottle"}
 	}
 })
-
-if minetest.get_modpath("xdecor") then
-	minetest.register_craft({
-	output = "mcg_dyemixer:dye_mixer",
-	recipe = {
-		{"xdecor:bowl", "group:stick", "xdecor:bowl"},
-		{"group:wood", "bucket:bucket_empty", "group:wood"},
-		{"vessels:steel_bottle", "vessels:steel_bottle", "vessels:steel_bottle"}
-	}
-})
-end

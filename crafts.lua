@@ -1,32 +1,62 @@
---All contents of this file are licensed under MIT. See LICENSE.txt for more information.
-
-local mixbases = {"pink", "magenta", "red", "orange", "brown", "yellow", "green", "dark_green", "cyan", "blue", "violet", "black", "dark_grey", "grey", "white"}
-
-local mixes = {
-	--             pink,     magenta,  red,      orange,      brown,       yellow,      green,       dark_green,  cyan,   blue,    violet,  black,      dark_grey,  grey,  white
-	white      = {"pink",   "pink",   "pink",   "orange",    "orange",    "yellow",    "green",     "green",     "grey", "cyan",  "violet","grey",     "grey",     "grey","white"},
-	grey       = {"pink",   "pink",   "pink",   "orange",    "orange",    "yellow",    "green",     "green",     "grey", "cyan",  "violet","dark_grey","grey",     "grey"},
-	dark_grey  = {"brown",  "brown",  "brown",  "brown",     "brown",     "brown",     "dark_green","dark_green","blue", "blue",  "violet","black",    "dark_grey"},
-	black      = {"black",  "black",  "black",  "black",     "black",     "black",     "black",     "black",     "black","black", "black", "black"},
-	violet     = {"magenta","magenta","magenta","red",       "brown",     "red",       "cyan",      "brown",     "blue", "violet","violet"},
-	blue       = {"violet", "violet", "magenta","brown",     "brown",     "dark_green","cyan",      "cyan",      "cyan", "blue"},
-	cyan       = {"brown",  "blue",   "brown",  "dark_green","dark_grey", "green",     "cyan",      "dark_green","cyan"},
-	dark_green = {"brown",  "brown",  "brown",  "brown",     "brown",     "green",     "green",     "dark_green"},
-	green      = {"yellow", "brown",  "yellow", "yellow",    "dark_green","green",     "green"},
-	yellow     = {"orange", "red",    "orange", "yellow",    "orange",    "yellow"},
-	brown      = {"brown",  "brown",  "brown",  "orange",    "brown"},
-	orange     = {"orange", "red",    "orange", "orange"},
-	red        = {"pink",   "magenta","red"},
-	magenta    = {"magenta","magenta"},
-	pink       = {"pink"},
+local dye_recipes = {
+	-- src1, src2, dst
+	-- RYB mixes
+	{"red", "blue", "violet"}, -- "purple"
+	{"yellow", "red", "orange"},
+	{"yellow", "blue", "green"},
+	-- RYB complementary mixes
+	{"yellow", "violet", "dark_grey"},
+	{"blue", "orange", "dark_grey"},
+	-- CMY mixes - approximation
+	{"cyan", "yellow", "green"},
+	{"cyan", "magenta", "blue"},
+	{"yellow", "magenta", "red"},
+	-- other mixes that result in a color we have
+	{"red", "green", "brown"},
+	{"magenta", "blue", "violet"},
+	{"green", "blue", "cyan"},
+	{"pink", "violet", "magenta"},
+	-- mixes with black
+	{"white", "black", "grey"},
+	{"grey", "black", "dark_grey"},
+	{"green", "black", "dark_green"},
+	{"orange", "black", "brown"},
+	-- mixes with white
+	{"white", "red", "pink"},
+	{"white", "dark_grey", "grey"},
+	{"white", "dark_green", "green"},
 }
 
-for one, results in pairs(mixes) do
-	for i, result in ipairs(results) do
-		local another = mixbases[i]
-		minetest.clear_craft({
-			recipe = {'dye:' .. one, 'dye:' .. another},
-		})
-		mcg_dyemixer.register_mix ('dye:' .. one, 'dye:' .. another, {name = 'dye:' .. result, count = 2})
-	end
+for _, mix in pairs(dye_recipes) do
+	minetest.clear_craft({
+		type = "shapeless",
+		recipe = {"dye:" .. mix[1], "dye:" .. mix[2]}
+	})
+	mcg_dyemixer.register_mix("dye:" .. mix[1], "dye:" .. mix[2], {name="dye:"..mix[3], count = 2})
+end
+
+local dyes = dye.dyes
+
+for i = 1, #dyes do
+	local name, desc = unpack(dyes[i])
+	minetest.clear_craft{
+		type = "shapeless",
+		recipe = {"group:dye,color_" .. name, "group:wool"}
+	}
+
+	mcg_dyemixer.register_mix("dye:" .. name, "wool:white", {name = "wool:" .. name, count = 1})
+	mcg_dyemixer.register_mix("dye:" .. name, "wool:grey", {name = "wool:" .. name, count = 1})
+	mcg_dyemixer.register_mix("dye:" .. name, "wool:dark_grey", {name = "wool:" .. name, count = 1})
+	mcg_dyemixer.register_mix("dye:" .. name, "wool:black", {name = "wool:" .. name, count = 1})
+	mcg_dyemixer.register_mix("dye:" .. name, "wool:violet", {name = "wool:" .. name, count = 1})
+	mcg_dyemixer.register_mix("dye:" .. name, "wool:blue", {name = "wool:" .. name, count = 1})
+	mcg_dyemixer.register_mix("dye:" .. name, "wool:cyan", {name = "wool:" .. name, count = 1})
+	mcg_dyemixer.register_mix("dye:" .. name, "wool:dark_green", {name = "wool:" .. name, count = 1})
+	mcg_dyemixer.register_mix("dye:" .. name, "wool:green", {name = "wool:" .. name, count = 1})
+	mcg_dyemixer.register_mix("dye:" .. name, "wool:yellow", {name = "wool:" .. name, count = 1})
+	mcg_dyemixer.register_mix("dye:" .. name, "wool:brown", {name = "wool:" .. name, count = 1})
+	mcg_dyemixer.register_mix("dye:" .. name, "wool:orange", {name = "wool:" .. name, count = 1})
+	mcg_dyemixer.register_mix("dye:" .. name, "wool:red", {name = "wool:" .. name, count = 1})
+	mcg_dyemixer.register_mix("dye:" .. name, "wool:magenta", {name = "wool:" .. name, count = 1})
+	mcg_dyemixer.register_mix("dye:" .. name, "wool:pink", {name = "wool:" .. name, count = 1})
 end

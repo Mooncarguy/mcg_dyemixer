@@ -1,4 +1,4 @@
-dye
 vessels
 bucket
-xdecor?
+wool
+dye
