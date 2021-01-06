@@ -1,4 +1,0 @@
-vessels
-bucket
-wool
-dye
