@@ -5,6 +5,7 @@ Changelog:
 beta
 ----
 
+0.6_beta Changed depends.txt to mod.conf, made dye and wool optional depends, fixed outdated license info
 0.5_beta Better formspec, better top texture, added support for wool mod
 
 
